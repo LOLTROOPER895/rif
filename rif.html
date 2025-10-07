@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Het Rif — Volledig dossier + Tifinagh (Berbers alfabet)</title>
+  <meta name="description" content="Uitgebreide site over het Rif (Marokko) met geografie, geschiedenis, leiders, politiek, regio's en het Berbers alfabet (Tifinagh) inclusief voorbeelden en transliteratie."/>
+  <style>
+    :root{
+      --blue:#2b7db3; --deep:#0f4d73; --green:#2f5632; --muted:#6b7280;
+      --card:#ffffff; --glass: rgba(255,255,255,0.9);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,#f7fbff,#f2f6f4);
+      color:#081826;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    header{
+      display:flex; align-items:center; gap:16px; padding:22px; color:white;
+      background:linear-gradient(90deg,var(--blue),var(--deep));
+      flex-wrap:wrap;
+    }
+    header h1{margin:0;font-size:clamp(18px,2.6vw,28px)}
+    header p{margin:0; opacity:0.95}
+    main{max-width:1200px;margin:22px auto;padding:18px}
+    .grid{display:grid; gap:18px}
+    .hero{display:grid; grid-template-columns:1fr 340px; gap:18px; align-items:start}
+    @media (max-width:980px){ .hero{grid-template-columns:1fr} }
+    .card{background:var(--card); border-radius:12px; padding:16px; box-shadow:0 8px 30px rgba(12,24,40,0.06)}
+    .cover{width:100%; height:320px; object-fit:cover; border-radius:10px}
+    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+    @media (max-width:700px){ .gallery{grid-template-columns:repeat(2,1fr)} }
+    .gallery img{width:100%; height:120px; object-fit:cover; border-radius:8px}
+    h2{margin-top:0}
+    .muted{color:var(--muted)}
+    .kpi{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .fact{background:linear-gradient(180deg,#fff,#fbfbfd); border-radius:8px; padding:10px; min-width:120px}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px}
+    .tab{padding:8px 12px; border-radius:8px; cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(15,77,115,0.06)}
+    .tab.active{background:var(--blue); color:white; border-color:transparent}
+    .tabcontent{display:none}
+    .tabcontent.active{display:block}
+    .timeline{list-style:none;padding:0;margin:0}
+    .timeline li{margin-bottom:12px;padding:12px;border-left:4px solid var(--blue);background:linear-gradient(90deg, rgba(43,125,179,0.03), transparent);border-radius:8px}
+    .leader{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+    .leader img{width:120px;height:90px;object-fit:cover;border-radius:6px}
+    table{width:100%; border-collapse:collapse;margin-top:8px}
+    th,td{border:1px solid #e6edf2;padding:8px;text-align:left}
+    th{background:#fbfdff}
+    .tifinagh-char{font-size:28px; font-family:"FreeSerif","Segoe UI Symbol","DejaVu Sans",sans-serif}
+    .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:#eef8ff;color:var(--deep);font-weight:700}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--green);color:white;text-decoration:none}
+    .quiz-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:8px}
+    .quiz-item{background:#fbfdff;border-radius:10px;padding:12px;text-align:center;box-shadow:0 4px 14px rgba(12,24,40,0.04);cursor:pointer}
+    .reveal{display:inline-block;margin-top:10px;padding:6px 8px;background:#f2f7f4;border-radius:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    @media print{ header, .no-print{display:none} body{background:white} main{max-width:100%; margin:0; padding:0} }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex; gap:12px; align-items:center">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden><rect width="24" height="24" rx="6" fill="#ffffff22"/><path d="M3 16c3-6 10-9 16-7" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <div>
+        <h1>Het Rif — volledig dossier</h1>
+        <p class="muted">Geografie • Politiek • Leiders • Cultuur • Tifinagh (Berbers alfabet)</p>
+      </div>
+    </div>
+    <div style="margin-left:auto;text-align:right">
+      <p style="margin:0">Inclusief interactieve oefeningen en printsamenvatting</p>
+      <small class="muted">Afbeeldingen: Wikimedia Commons</small>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="card">
+        <img class="cover" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Chauen.jpg" alt="Chefchaouen">
+        <h2>Het Rif — context en kernvragen</h2>
+        <p class="muted">Deze uitgebreide pagina behandelt de hele Rif-regio: west-, midden- en oost-Rif. Nieuw: overzicht van het Berbers alfabet (Tifinagh) met voorbeelden en een kleine oefening.</p>
+        <div class="kpi">
+          <div class="fact"><strong>Belangrijke steden</strong><br>Tanger, Tetouan, Chefchaouen, Al Hoceima</div>
+          <div class="fact"><strong>Belangrijk thema</strong><br>Marginalisatie & protestbewegingen</div>
+          <div class="fact"><strong>Talen</strong><br>Tarifit (Tifinagh), Arabisch</div>
+        </div>
+      </div>
+
+      <aside class="card">
+        <h4>Snelle navigatie</h4>
+        <div class="tabs" id="topTabs">
+          <div class="tab active" data-target="sec-overview">Overzicht</div>
+          <div class="tab" data-target="sec-history">Geschiedenis</div>
+          <div class="tab" data-target="sec-leaders">Leiders</div>
+          <div class="tab" data-target="sec-tifinagh">Tifinagh</div>
+        </div>
+
+        <div id="sec-overview" class="tabcontent active">
+          <p class="muted">Gebruik de tabs om snel naar secties te springen. Scroll naar beneden voor interactieve onderdelen en printsamenvatting.</p>
+        </div>
+        <div id="sec-history" class="tabcontent">
+          <p class="muted">Diepere geschiedenis en analyses van conflicten en sociale bewegingen.</p>
+        </div>
+        <div id="sec-leaders" class="tabcontent">
+          <p class="muted">Profielen van centrale figuren in Rif-geschiedenis en hedendaagse bewegingen.</p>
+        </div>
+        <div id="sec-tifinagh" class="tabcontent">
+          <p class="muted">Leer het Berbers alfabet (Tifinagh) — tabel en oefening beneden.</p>
+        </div>
+
+        <hr style="margin:12px 0">
+        <h4>Galerij</h4>
+        <div class="gallery" aria-hidden="false">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/RifMountainsInTheChefchaouenProvince.jpg/330px-RifMountainsInTheChefchaouenProvince.jpg" alt="Rif bergen">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Al_Hoceima_mosque.jpg/250px-Al_Hoceima_mosque.jpg" alt="Al Hoceima">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Moroccan_Mediterranean_coast_-_aerial_view.jpg/250px-Moroccan_Mediterranean_coast_-_aerial_view.jpg" alt="Rif kust">
+        </div>
+      </aside>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="card grid" style="margin-top:18px">
+      <h2>Overzicht — geografie, regio's en cultuur</h2>
+      <div style="display:grid; grid-template-columns:1fr 320px; gap:18px">
+        <div>
+          <h3>Regionale opsplitsing</h3>
+          <p><strong>West-Rif:</strong> Tanger & Tetouan — toerisme en handelscontacten met Europa. <br>
+             <strong>Midden-Rif:</strong> bergdorpen en landbouw. <br>
+             <strong>Oost-Rif:</strong> Al Hoceima en kuststreek — sociaal-economisch kwetsbaar, centrum van protesten (Hirak).</p>
+
+          <h3>Cultuur</h3>
+          <p>De Riffijnen spreken Tarifit (een variant van het Noordelijk Berbers). Tifinagh is het schrift dat in recente decennia ook weer symbolisch en educatief wordt gebruikt — zie de sectie over het alfabet.</p>
+        </div>
+
+        <aside class="card muted">
+          <h4>Quick facts</h4>
+          <p><strong>Hoogste toppen</strong><br>Jbel Tidirhine en andere toppen tot ~2400 m</p>
+          <p><strong>Klimaat</strong><br>Mediterrane invloed, redelijk neerslag in verrijkte gebieden</p>
+        </aside>
+      </div>
+
+      <hr style="margin:14px 0">
+
+      <h3>Tijdlijn — kernmomenten (uitgebreid)</h3>
+      <ul class="timeline">
+        <li><strong>Prehistorie – Oudheid</strong>: Berberbewoning; Feniciërs en later Romeinse handelsposten langs de kust.</li>
+        <li><strong>Middeleeuwen</strong>: lokale emiraten (o.a. Nekor), islamisering en handelsnetwerken.</li>
+        <li><strong>15e–19e eeuw</strong>: Andalusische migratie beïnvloedt architectuur en cultuur.</li>
+        <li><strong>1921–1926 — Rif War</strong>: Abd el-Krim leidt opstand; uitroeping van de Republiek van het Rif; neergeslagen door gezamenlijke Franse en Spaanse militaire acties.</li>
+        <li><strong>1958–1959 — Rif Revolt</strong>: opstand tegen marginalisatie; zware staatsreactie.</li>
+        <li><strong>2016–2017 — Hirak Rif</strong>: protest na de dood van Mouhcine Fikri; Nasser Zefzafi prominent; arrestaties en internationale aandacht.</li>
+        <li><strong>2020s</strong>: aanhoudende sociale-economische uitdagingen; hervormingsbelofte maar langzame uitvoering.</li>
+      </ul>
+    </section>
+
+    <!-- HISTORY / DOCUMENTARY -->
+    <section id="history" class="card" style="margin-top:18px">
+      <h2>Gedetailleerde geschiedenis & analyses</h2>
+
+      <article>
+        <h3>Rif War (1921–1926) — kernanalyse</h3>
+        <p>
+          De Rif War staat bekend als één van de meest opmerkelijke anti-koloniale opstanden in Noord-Afrika. Onder leiding van Abd el-Krim
+          gaven Riffijnse milities Spanje (en later in samenwerking met Frankrijk) zware verliezen en riepen ze de Republiek van het Rif uit.
+          De oorlog eindigde pas na grootschalige militaire interventies, inclusief bombardementen en internationale diplomatie.
+        </p>
+      </article>
+
+      <article>
+        <h3>1958-opstand & nasleep</h3>
+        <p>
+          De 1958-opstand toonde aan dat onafhankelijkheid niet automatisch leidde tot gelijke ontwikkeling. De harde reactie van de
+          monarchie en langdurige militaire aanwezigheid leidden tot blijvend wantrouwen en sociale spanningen.
+        </p>
+      </article>
+
+      <article>
+        <h3>Hirak (2016–2017) — beweging en betekenis</h3>
+        <p>
+          Hirak begon als lokale woede maar groeide uit tot een georganiseerde beweging die systemische problemen aan de kaak stelde:
+          gebrek aan banen, slechte infrastructuur en straffeloosheid bij economische misstanden. Hirak liet zien dat verbindingen tussen
+          diaspora, media en lokale organisaties moderne politieke mobilisatie vergemakkelijken.
+        </p>
+      </article>
+    </section>
+
+    <!-- LEADERS -->
+    <section id="leaders" class="card" style="margin-top:18px">
+      <h2>Belangrijke leiders & figuren (uitgebreid)</h2>
+
+      <div class="leader">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Abd_el-Krim_1922.jpg/220px-Abd_el-Krim_1922.jpg" alt="Abd el-Krim">
+        <div>
+          <strong>Abd el-Krim (1882–1963)</strong>
+          <p class="muted">Leider van de Rif-opstand; voorzitter van de Republiek van het Rif; strategisch en symbolisch belangrijk voor anti-koloniale bewegingen in Noord-Afrika.</p>
+        </div>
+      </div>
+
+      <div class="leader">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mohammed_V_of_Morocco.jpg/220px-Mohammed_V_of_Morocco.jpg" alt="Mohammed V">
+        <div>
+          <strong>Mohammed V (1909–1961)</strong>
+          <p class="muted">Sultan en later koning tijdens de onafhankelijkheid van Marokko; zijn opvolgers hadden een centrale rol in de reacties op Rif-opstanden.</p>
+        </div>
+      </div>
+
+      <div class="leader">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Hassan_II_of_Morocco.jpg/220px-Hassan_II_of_Morocco.jpg" alt="Hassan II">
+        <div>
+          <strong>Hassan II (1929–1999)</strong>
+          <p class="muted">Koning tijdens de 1958-opstand; beleid en repressie in zijn periode beïnvloedden langdurige regio-overheersing.</p>
+        </div>
+      </div>
+
+      <div class="leader">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mohammed_VI_of_Morocco.jpg/220px-Mohammed_VI_of_Morocco.jpg" alt="Mohammed VI">
+        <div>
+          <strong>Mohammed VI (1963– )</strong>
+          <p class="muted">Huidige koning. Heeft hervormingsprogramma’s aangekondigd; regio's zoals het Rif wachten op concrete en duurzame implementatie.</p>
+        </div>
+      </div>
+
+      <div class="leader">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Nasser_Zefzafi.jpg/220px-Nasser_Zefzafi.jpg" alt="Nasser Zefzafi" onerror="this.style.display='none'">
+        <div>
+          <strong>Nasser Zefzafi (°1989)</strong>
+          <p class="muted">Prominente leider van Hirak Rif. Zijn arrestatie leidde tot internationale aandacht en discussie over protestvrijheid en procesvoering in Marokko.</p>
+        </div>
+      </div>
+
+      <p class="muted"><small>Er zijn veel lokale leiders, gemeentelijke vertegenwoordigers, activisten en gemeenschapsfiguren die lokaal invloedrijk zijn — dit is een selectie van prominente namen.</small></p>
+    </section>
+
+    <!-- TIFINAGH / BERBERS ALPHABET -->
+    <section id="tifinagh" class="card" style="margin-top:18px">
+      <h2>Tifinagh — het Berbers alfabet (inleiding & tabel)</h2>
+      <p>
+        Tifinagh is het traditionele schrift dat door Berber-gemeenschappen (Amazigh) wordt gebruikt. In moderne contexten wordt een
+        gestandaardiseerde vorm (Neo-Tifinagh) vaak gebruikt voor onderwijs, symboliek en herkenning van taalrechten. Hieronder vind je een
+        overzicht van veelgebruikte letters (Neo-Tifinagh), met Unicode-codepoint, Latijnse transliteratie en voorbeeldwoorden (Tarifit).
+      </p>
+
+      <h3>Uitleg / aanwijzingen</h3>
+      <ul>
+        <li>Tifinagh gebruikt losse tekens — in schriftelijke educatie worden vaak Latijnse transliteraties gebruikt naast Tifinagh.</li>
+        <li>De voorbeelden hieronder zijn benaderingen voor uitspraak; dialecten (bv. Tarifit) variëren lokaal.</li>
+      </ul>
+
+      <h3>Tabel: veelgebruikte Neo-Tifinagh letters</h3>
+      <table>
+        <thead>
+          <tr><th>Tifinagh</th><th>Unicode</th><th>Latijn</th><th>Voorbeeld (Tarifit)</th><th>Betekenis / opmerking</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="tifinagh-char">ⴰ</td><td>U+2D30</td><td>a</td><td>ⴰman — aman</td><td>klinker a</td></tr>
+          <tr><td class="tifinagh-char">ⴱ</td><td>U+2D31</td><td>b</td><td>ⴱab — bab</td><td>consonant b</td></tr>
+          <tr><td class="tifinagh-char">ⴳ</td><td>U+2D33</td><td>g</td><td>ⴳur — gur</td><td>g-klank</td></tr>
+          <tr><td class="tifinagh-char">ⴷ</td><td>U+2D37</td><td>d</td><td>ⴷar — dar</td><td>d-klank</td></tr>
+          <tr><td class="tifinagh-char">ⴹ</td><td>U+2D39</td><td>ḍ</td><td>—</td><td>emfatische d</td></tr>
+          <tr><td class="tifinagh-char">ⴻ</td><td>U+2D3B</td><td>e/ə</td><td>ⴻxx — voorbeeld</td><td>korte klinker</td></tr>
+          <tr><td class="tifinagh-char">ⵣ</td><td>U+2D63</td><td>z</td><td>ⵣru — zru</td><td>z-klank</td></tr>
+          <tr><td class="tifinagh-char">ⵎ</td><td>U+2D4E</td><td>m</td><td>ⵎama — mama</td><td>m-klank</td></tr>
+          <tr><td class="tifinagh-char">ⵔ</td><td>U+2D54</td><td>r</td><td>ⵔif — rif</td><td>r-klank</td></tr>
+          <tr><td class="tifinagh-char">ⵣ</td><td>U+2D63</td><td>z</td><td>ⵣrara — zrar(a)</td><td>tweede z-voorbeeld</td></tr>
+          <tr><td class="tifinagh-char">ⵣⵣ</td><td>—</td><td>zz</td><td>—</td><td>dubbelle klank mogelijk</td></tr>
+        </tbody>
+      </table>
+
+      <p class="muted" style="margin-top:8px">Opmerking: dit is een beknopt overzicht — voor een volledig alfabet (Neo-Tifinagh) zijn er ~33-teken sets en varianten. De Unicode-bloks voor Tifinagh lopen van U+2D30 tot U+2D7F.</p>
+
+      <hr style="margin:12px 0">
+
+      <h3>Interactieve oefening — herkentekens</h3>
+      <p>Klik op een vakje om de Latijnse transliteratie te zien. (Kleine oefening om teken → klank te matchen.)</p>
+      <div class="quiz-grid" id="quiz">
+        <!-- items toegevoegd via JS -->
+      </div>
+      <div style="margin-top:10px" class="muted"><small>Tip: gebruik dit om visueel te leren — combineer met luisteren naar lokale sprekers om uitspraak te oefenen.</small></div>
+    </section>
+
+    <!-- SUMMARY / PRINT -->
+    <section id="summary" class="card" style="margin-top:18px">
+      <h2>Printsamenvatting & aanbevelingen</h2>
+      <p><strong>Samenvatting</strong></p>
+      <p>Het Rif is een historisch en cultureel rijk gebied van Noord-Marokko met een unieke mix van Berberidentiteit, kuststeden en bergdorpen. Belangrijke historische gebeurtenissen (Rif War, 1958-opstand, Hirak) laten de spanningen tussen centrale macht en regionale verwachtingen zien. Het herstel van Tifinagh en taalonderwijs versterkt moderne culturele identiteit en biedt tegelijk kansen voor lokaal onderwijs en behoud van taal. Duurzame ontwikkeling vereist gerichte investeringen, infrastructuur en inclusief bestuur.</p>
+      <p style="margin-top:8px"><a class="btn" href="#" onclick="window.print();return false">Print deze samenvatting (A4-ready)</a></p>
+    </section>
+
+    <!-- SOURCES -->
+    <footer class="card" style="margin-top:18px">
+      <h3>Bronnen & verder lezen</h3>
+      <ol class="muted sources">
+        <li>Algemene overzichtsartikelen over het Rif (geografie & geschiedenis) — geverifieerde bronnen zoals Britannica en academische artikelen.</li>
+        <li>Rif War & Abd el-Krim — historische literatuur en biografieën.</li>
+        <li>Hirak Rif (2016–2017) — nieuwsanalyses en rapporten van mensenrechtenorganisaties.</li>
+        <li>Tifinagh & Amazigh taal — UNESCO, linguïstische studies en Unicode documentatie over Tifinagh (U+2D30–U+2D7F).</li>
+      </ol>
+
+      <p class="muted" style="margin-top:12px">Notitie: afbeeldingen zijn gelinkt naar Wikimedia Commons in de offline-versie; controleer auteursrechten voor commercieel gebruik.</p>
+    </footer>
+  </main>
+
+  <script>
+    // Top tabs
+    document.querySelectorAll('#topTabs .tab').forEach(t=>{
+      t.addEventListener('click', ()=>{
+        document.querySelectorAll('#topTabs .tab').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('#topTabs .tabcontent').forEach(c=>c.classList.remove('active'));
+        t.classList.add('active');
+        const target = document.getElementById(t.dataset.target);
+        if(target) target.classList.add('active');
+      });
+    });
+
+    // Ensure main interactive tabs (if present) work
+    document.querySelectorAll('.tabs .tab').forEach(t=>{
+      t.addEventListener('click', ()=> {
+        const parent = t.parentElement;
+        // if part of topTabs handled above, skip duplicates.
+      });
+    });
+
+    // Tifinagh quiz: letters array (sample subset)
+    const letters = [
+      {char:'ⴰ', latin:'a', note:'klinker a'},
+      {char:'ⴱ', latin:'b', note:'b'},
+      {char:'ⴳ', latin:'g', note:'g'},
+      {char:'ⴷ', latin:'d', note:'d'},
+      {char:'ⴹ', latin:'ḍ', note:'emfatische d'},
+      {char:'ⴻ', latin:'e', note:'korte e'},
+      {char:'ⵣ', latin:'z', note:'z'},
+      {char:'ⵎ', latin:'m', note:'m'},
+      {char:'ⵔ', latin:'r', note:'r'}
+    ];
+
+    // render quiz items
+    const quiz = document.getElementById('quiz');
+    letters.forEach((L, i) => {
+      const item = document.createElement('div');
+      item.className = 'quiz-item';
+      item.innerHTML = `<div class="tifinagh-char">${L.char}</div><div style="margin-top:8px;font-weight:700">Klik om te onthullen</div><div class="reveal" style="display:none">${L.latin} — ${L.note}</div>`;
+      item.addEventListener('click', ()=> {
+        const rv = item.querySelector('.reveal');
+        if(rv.style.display === 'none') rv.style.display = 'inline-block';
+        else rv.style.display = 'none';
+      });
+      quiz.appendChild(item);
+    });
+
+    // Basic accessibility: enable keyboard reveal
+    document.querySelectorAll('.quiz-item').forEach((el, idx) => {
+      el.tabIndex = 0;
+      el.addEventListener('keydown', (e)=> {
+        if(e.key === 'Enter' || e.key === ' ') el.click();
+      });
+    });
+
+    // Small enhancement: set focus to first quiz item on load
+    (function(){ const first = document.querySelector('.quiz-item'); if(first) first.focus(); })();
+  </script>
+</body>
+</html>
