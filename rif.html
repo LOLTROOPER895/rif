@@ -1,366 +1,2457 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Het Rif — Volledig dossier + Tifinagh (Berbers alfabet)</title>
-  <meta name="description" content="Uitgebreide site over het Rif (Marokko) met geografie, geschiedenis, leiders, politiek, regio's en het Berbers alfabet (Tifinagh) inclusief voorbeelden en transliteratie."/>
-  <style>
-    :root{
-      --blue:#2b7db3; --deep:#0f4d73; --green:#2f5632; --muted:#6b7280;
-      --card:#ffffff; --glass: rgba(255,255,255,0.9);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg,#f7fbff,#f2f6f4);
-      color:#081826;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    header{
-      display:flex; align-items:center; gap:16px; padding:22px; color:white;
-      background:linear-gradient(90deg,var(--blue),var(--deep));
-      flex-wrap:wrap;
-    }
-    header h1{margin:0;font-size:clamp(18px,2.6vw,28px)}
-    header p{margin:0; opacity:0.95}
-    main{max-width:1200px;margin:22px auto;padding:18px}
-    .grid{display:grid; gap:18px}
-    .hero{display:grid; grid-template-columns:1fr 340px; gap:18px; align-items:start}
-    @media (max-width:980px){ .hero{grid-template-columns:1fr} }
-    .card{background:var(--card); border-radius:12px; padding:16px; box-shadow:0 8px 30px rgba(12,24,40,0.06)}
-    .cover{width:100%; height:320px; object-fit:cover; border-radius:10px}
-    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
-    @media (max-width:700px){ .gallery{grid-template-columns:repeat(2,1fr)} }
-    .gallery img{width:100%; height:120px; object-fit:cover; border-radius:8px}
-    h2{margin-top:0}
-    .muted{color:var(--muted)}
-    .kpi{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .fact{background:linear-gradient(180deg,#fff,#fbfbfd); border-radius:8px; padding:10px; min-width:120px}
-    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px}
-    .tab{padding:8px 12px; border-radius:8px; cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(15,77,115,0.06)}
-    .tab.active{background:var(--blue); color:white; border-color:transparent}
-    .tabcontent{display:none}
-    .tabcontent.active{display:block}
-    .timeline{list-style:none;padding:0;margin:0}
-    .timeline li{margin-bottom:12px;padding:12px;border-left:4px solid var(--blue);background:linear-gradient(90deg, rgba(43,125,179,0.03), transparent);border-radius:8px}
-    .leader{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
-    .leader img{width:120px;height:90px;object-fit:cover;border-radius:6px}
-    table{width:100%; border-collapse:collapse;margin-top:8px}
-    th,td{border:1px solid #e6edf2;padding:8px;text-align:left}
-    th{background:#fbfdff}
-    .tifinagh-char{font-size:28px; font-family:"FreeSerif","Segoe UI Symbol","DejaVu Sans",sans-serif}
-    .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:#eef8ff;color:var(--deep);font-weight:700}
-    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--green);color:white;text-decoration:none}
-    .quiz-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:8px}
-    .quiz-item{background:#fbfdff;border-radius:10px;padding:12px;text-align:center;box-shadow:0 4px 14px rgba(12,24,40,0.04);cursor:pointer}
-    .reveal{display:inline-block;margin-top:10px;padding:6px 8px;background:#f2f7f4;border-radius:8px}
-    footer{margin-top:18px;color:var(--muted);font-size:13px}
-    @media print{ header, .no-print{display:none} body{background:white} main{max-width:100%; margin:0; padding:0} }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Het Rifgebied in Marokko - Cultuur, Geschiedenis & Erfgoed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        /* Algemene opmaak */
+        :root {
+            --primary: #2c5530;
+            --secondary: #d4af37;
+            --accent: #8b4513;
+            --light: #f8f5e6;
+            --dark: #1a331c;
+            --text: #333333;
+            --text-light: #666666;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header opmaak */
+        header {
+            background: linear-gradient(rgba(44, 85, 48, 0.85), rgba(26, 51, 28, 0.9)), 
+                        url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 0 80px;
+            margin-bottom: 40px;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent), var(--secondary));
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .header-decoration {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 40px;
+            background-color: var(--light);
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+        }
+        
+        /* Navigatie */
+        nav {
+            background-color: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 15px 0;
+        }
+        
+        nav li {
+            margin: 0 20px;
+            position: relative;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        nav a:hover {
+            color: var(--secondary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Sectie opmaak */
+        section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            margin-bottom: 50px;
+            border-top: 5px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+            scroll-margin-top: 80px;
+        }
+        
+        section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .section-header h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            margin: 0;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            bottom: -10px;
+            left: 0;
+            background-color: var(--secondary);
+        }
+        
+        .section-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .section-control {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .section-control:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Inleiding sectie */
+        .intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .intro {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .intro-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .intro-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .highlight {
+            background: rgba(44, 85, 48, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .highlight i {
+            color: var(--secondary);
+            margin-right: 8px;
+        }
+        
+        .intro-image {
+            text-align: center;
+            position: relative;
+        }
+        
+        .intro-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: var(--shadow-hover);
+            transition: transform 0.5s;
+        }
+        
+        .intro-image img:hover {
+            transform: scale(1.03);
+        }
+        
+        .intro-image::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            z-index: -1;
+        }
+        
+        /* Nieuwe sectie: Geografie */
+        .geography-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .geography-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .geography-map {
+            text-align: center;
+        }
+        
+        #map {
+            height: 400px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+        }
+        
+        .geography-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            background: rgba(44, 85, 48, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .feature i {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        /* Nieuwe sectie: Economie */
+        .economy-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .economy-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .economy-sectors {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .sector {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .sector:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .sector i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .sector h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .economy-stats {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .economy-stats h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .stat-item {
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .stat-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        /* Nieuws sectie */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .news-item {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            transition: all 0.3s;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .news-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .news-item h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .news-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .news-date i {
+            color: var(--secondary);
+        }
+        
+        .news-item p {
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+        
+        .news-read-more {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: auto;
+        }
+        
+        .news-more {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .news-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .news-button:hover {
+            background-color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        /* Leiders sectie */
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .leader-card {
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .leader-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .leader-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .leader-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            border: 4px solid var(--secondary);
+            box-shadow: var(--shadow);
+        }
+        
+        .leader-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .leader-period {
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 10px;
+            background-color: rgba(212, 175, 55, 0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .leader-card p {
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+        
+        .leader-read-more {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: auto;
+        }
+        
+        /* Alfabet sectie */
+        .alphabet-container {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .alphabet-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .alphabet-letters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .letter {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+        
+        .letter:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .letter.active {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .letter-audio {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .letter-info {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(44, 85, 48, 0.05), rgba(212, 175, 55, 0.05));
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .letter-info.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .letter-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .audio-button {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .audio-button:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            transform: scale(1.05);
+        }
+        
+        .alphabet-info {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Quiz sectie */
+        .quiz-container {
+            background: linear-gradient(135deg, rgba(44, 85, 48, 0.05), rgba(212, 175, 55, 0.05));
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .quiz-question {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .quiz-question p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-option {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+        }
+        
+        .quiz-option:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        .quiz-option.correct {
+            background-color: #e8f5e8;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+        
+        .quiz-result {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .quiz-result.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .quiz-button {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            font-weight: 600;
+        }
+        
+        .quiz-button:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            transform: scale(1.05);
+        }
+        
+        /* Stammen sectie */
+        .tribes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .tribe-card {
+            background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .tribe-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .tribe-card:hover::before {
+            left: 100%;
+        }
+        
+        .tribe-card:hover {
+            background: linear-gradient(135deg, #f0f0f0, #e8e8e8);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .tribe-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .tribe-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .tribe-card p {
+            flex-grow: 1;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .tribe-read-more {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: auto;
+        }
+        
+        .tribe-detail {
+            background: linear-gradient(135deg, rgba(44, 85, 48, 0.05), rgba(212, 175, 55, 0.05));
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .tribe-detail.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tribe-detail h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .tribe-detail p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .tribe-detail strong {
+            color: var(--primary);
+        }
+        
+        /* Cultuur sectie */
+        .culture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .culture-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .culture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .culture-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .culture-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 15px;
+        }
+        
+        .culture-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .culture-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .culture-info p {
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+        
+        .culture-read-more {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: auto;
+        }
+        
+        /* Media sectie */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .media-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .media-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .media-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .media-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 2s infinite;
+        }
+        
+        .media-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .media-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .media-info p {
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+        
+        .media-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+        
+        .media-button:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .footer-decoration {
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent), var(--secondary));
+            margin-bottom: 20px;
+        }
+        
+        /* Animaties */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Responsive aanpassingen */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 10px 0;
+            }
+            
+            section {
+                padding: 25px;
+            }
+            
+            .letter {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-stats {
+                gap: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div style="display:flex; gap:12px; align-items:center">
-      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden><rect width="24" height="24" rx="6" fill="#ffffff22"/><path d="M3 16c3-6 10-9 16-7" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <div>
-        <h1>Het Rif — volledig dossier</h1>
-        <p class="muted">Geografie • Politiek • Leiders • Cultuur • Tifinagh (Berbers alfabet)</p>
-      </div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Het Rifgebied in Marokko</h1>
+                <p>Een culturele en historische verkenning van het Noord-Marokkaanse berggebied</p>
+                
+                <div class="header-stats">
+                    <div class="stat">
+                        <span class="stat-number">300+</span>
+                        <span class="stat-label">Kilometer berggebied</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2.4M+</span>
+                        <span class="stat-label">Inwoners</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">12+</span>
+                        <span class="stat-label">Belangrijke stammen</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">Jaar geschiedenis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-decoration"></div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#inleiding"><i class="fas fa-home"></i> Inleiding</a></li>
+                <li><a href="#geografie"><i class="fas fa-mountain"></i> Geografie</a></li>
+                <li><a href="#economie"><i class="fas fa-chart-line"></i> Economie</a></li>
+                <li><a href="#cultuur"><i class="fas fa-monument"></i> Cultuur</a></li>
+                <li><a href="#nieuws"><i class="fas fa-newspaper"></i> Nieuws</a></li>
+                <li><a href="#leiders"><i class="fas fa-users"></i> Leiders</a></li>
+                <li><a href="#alfabet"><i class="fas fa-language"></i> Alfabet</a></li>
+                <li><a href="#stammen"><i class="fas fa-people-group"></i> Stammen</a></li>
+                <li><a href="#media"><i class="fas fa-photo-video"></i> Media</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <section id="inleiding">
+            <div class="section-header">
+                <h2>Inleiding tot het Rifgebied</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="shareIntro"><i class="fas fa-share"></i> Delen</button>
+                    <button class="section-control" id="printIntro"><i class="fas fa-print"></i> Printen</button>
+                </div>
+            </div>
+            
+            <div class="intro">
+                <div class="intro-text">
+                    <p>Het Rifgebied is een bergachtige regio in het noorden van Marokko, gelegen langs de Middellandse Zeekust. Het gebied staat bekend om zijn adembenemende natuur, unieke cultuur en rijke geschiedenis.</p>
+                    <p>De bewoners van het Rifgebied, de Riffijnen, hebben een eigen taal (Tarifit), tradities en een sterke gemeenschapszin. Het gebied heeft door de geschiedenis heen verschillende periodes van autonomie en verzet gekend.</p>
+                    <p>Het Rifgebergte strekt zich uit over ongeveer 300 kilometer van Tanger tot de grens met Algerije en bereikt hoogtes tot 2456 meter in de Jbel Tidirhine. De regio kent een mediterraan klimaat met warme, droge zomers en milde, natte winters.</p>
+                    
+                    <div class="intro-highlights">
+                        <div class="highlight">
+                            <i class="fas fa-mountain"></i>
+                            <strong>Bergachtig terrein</strong>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-water"></i>
+                            <strong>Middellandse Zeekust</strong>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-leaf"></i>
+                            <strong>Rijke biodiversiteit</strong>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-history"></i>
+                            <strong>Diepgewortelde geschiedenis</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-image">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Rifgebergte in Marokko">
+                    <p>Het Rifgebergte in Noord-Marokko</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="geografie">
+            <div class="section-header">
+                <h2>Geografie van het Rifgebied</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="showMap"><i class="fas fa-map"></i> Kaart</button>
+                    <button class="section-control" id="downloadGeo"><i class="fas fa-download"></i> Download</button>
+                </div>
+            </div>
+            
+            <div class="geography-content">
+                <div class="geography-text">
+                    <p>Het Rifgebergte vormt een boog langs de noordkust van Marokko, van de Straat van Gibraltar in het westen tot de grens met Algerije in het oosten. De bergketen is onderdeel van het Atlasgebergte en bereikt zijn hoogste punt in de Jbel Tidirhine (2456 m).</p>
+                    <p>Het gebied kent een grote verscheidenheid aan landschappen: van ruige bergtoppen en diepe valleien tot vruchtbare kustvlaktes. De noordelijke hellingen zijn bedekt met dichte bossen van kurkeik, terwijl de zuidelijke hellingen droger zijn met meer steppe-achtige vegetatie.</p>
+                    <p>Het Rifgebied wordt doorsneden door verschillende rivieren die uitmonden in de Middellandse Zee, waaronder de Moulouya, de grootste rivier van Marokko.</p>
+                    
+                    <div class="geography-features">
+                        <div class="feature" id="featureHeight">
+                            <i class="fas fa-mountain"></i>
+                            <h4>Hoogste punt</h4>
+                            <p>Jbel Tidirhine (2456 m)</p>
+                        </div>
+                        <div class="feature" id="featureLength">
+                            <i class="fas fa-ruler-horizontal"></i>
+                            <h4>Lengte</h4>
+                            <p>Ongeveer 300 km</p>
+                        </div>
+                        <div class="feature" id="featureVegetation">
+                            <i class="fas fa-tree"></i>
+                            <h4>Vegetatie</h4>
+                            <p>Mediterraan bos</p>
+                        </div>
+                        <div class="feature" id="featureClimate">
+                            <i class="fas fa-tint"></i>
+                            <h4>Klimaat</h4>
+                            <p>Mediterraan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="geography-map">
+                    <div id="map"></div>
+                    <p>Geografische ligging van het Rifgebergte in Noord-Marokko</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="economie">
+            <div class="section-header">
+                <h2>Economie van het Rifgebied</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="showStats"><i class="fas fa-chart-pie"></i> Statistieken</button>
+                    <button class="section-control" id="showExport"><i class="fas fa-file-export"></i> Export</button>
+                </div>
+            </div>
+            
+            <div class="economy-content">
+                <div class="economy-sectors">
+                    <div class="sector" id="sectorAgriculture">
+                        <i class="fas fa-seedling"></i>
+                        <h3>Landbouw</h3>
+                        <p>Traditionele teelt van olijven, amandelen, vijgen en cannabis.</p>
+                    </div>
+                    <div class="sector" id="sectorFishing">
+                        <i class="fas fa-fish"></i>
+                        <h3>Visserij</h3>
+                        <p>Belangrijke visserijsector langs de Middellandse Zeekust.</p>
+                    </div>
+                    <div class="sector" id="sectorTourism">
+                        <i class="fas fa-hiking"></i>
+                        <h3>Toerisme</h3>
+                        <p>Groeiende sector met focus op ecotoerisme en cultuur.</p>
+                    </div>
+                    <div class="sector" id="sectorCraft">
+                        <i class="fas fa-industry"></i>
+                        <h3>Ambacht</h3>
+                        <p>Traditionele productie van textiel, keramiek en houtwerk.</p>
+                    </div>
+                </div>
+                <div class="economy-stats">
+                    <h3>Economische Indicatoren</h3>
+                    <div class="stat-item" id="statAgriculture">
+                        <div class="stat-value">42%</div>
+                        <div class="stat-label">Werkzaam in landbouw</div>
+                    </div>
+                    <div class="stat-item" id="statFishing">
+                        <div class="stat-value">18%</div>
+                        <div class="stat-label">Werkzaam in visserij</div>
+                    </div>
+                    <div class="stat-item" id="statTourism">
+                        <div class="stat-value">+25%</div>
+                        <div class="stat-label">Toeristische groei</div>
+                    </div>
+                    <div class="stat-item" id="statUnemployment">
+                        <div class="stat-value">15%</div>
+                        <div class="stat-label">Werkloosheid</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cultuur">
+            <div class="section-header">
+                <h2>Cultuur en Tradities</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="filterCulture"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="section-control" id="sortCulture"><i class="fas fa-sort"></i> Sorteren</button>
+                </div>
+            </div>
+            
+            <div class="culture-grid">
+                <div class="culture-card" data-culture="kleding">
+                    <div class="culture-image" style="background-image: url('https://images.unsplash.com/photo-1594736797933-d0e64d1b0e0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');">
+                        <div class="culture-overlay">
+                            <h3>Traditionele Kleding</h3>
+                        </div>
+                    </div>
+                    <div class="culture-info">
+                        <p>De Riffijnse cultuur kent een rijke traditie van kleurrijke kleding en sieraden. Vrouwen dragen vaak felgekleurde gewaden en zilveren sieraden.</p>
+                        <div class="culture-read-more">
+                            <span>Meer informatie</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="culture-card" data-culture="architectuur">
+                    <div class="culture-image" style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');">
+                        <div class="culture-overlay">
+                            <h3>Architectuur</h3>
+                        </div>
+                    </div>
+                    <div class="culture-info">
+                        <p>Traditionele Riffijnse architectuur kenmerkt zich door witte huizen met blauwe accenten, vergelijkbaar met de stijl in Chefchaouen.</p>
+                        <div class="culture-read-more">
+                            <span>Meer informatie</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="culture-card" data-culture="muziek">
+                    <div class="culture-image" style="background-image: url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');">
+                        <div class="culture-overlay">
+                            <h3>Muziek en Dans</h3>
+                        </div>
+                    </div>
+                    <div class="culture-info">
+                        <p>Riffijnse muziek wordt gekenmerkt door ritmische drummen en traditionele instrumenten zoals de lotar (luit).</p>
+                        <div class="culture-read-more">
+                            <span>Meer informatie</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="nieuws">
+            <div class="section-header">
+                <h2>Nieuws uit het Rifgebied</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="filterNews"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="section-control" id="sortNews"><i class="fas fa-sort"></i> Sorteren</button>
+                </div>
+            </div>
+            
+            <div class="news-grid">
+                <div class="news-item" data-news="ontwikkeling">
+                    <div class="news-category">Ontwikkeling</div>
+                    <h3>Ontwikkelingsprojecten in de regio</h3>
+                    <div class="news-date"><i class="fas fa-calendar-alt"></i> 15 maart 2023</div>
+                    <p>De Marokkaanse overheid heeft nieuwe ontwikkelingsprojecten aangekondigd voor het Rifgebied, gericht op verbetering van infrastructuur en gezondheidszorg.</p>
+                    <div class="news-read-more">
+                        <span>Lees verder</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="news-item" data-news="festival">
+                    <div class="news-category">Cultuur</div>
+                    <h3>Cultureel festival geannuleerd</h3>
+                    <div class="news-date"><i class="fas fa-calendar-alt"></i> 2 februari 2023</div>
+                    <p>Het jaarlijkse Timitar festival in Al Hoceima is dit jaar geannuleerd vanwege budgettaire beperkingen en organisatorische uitdagingen.</p>
+                    <div class="news-read-more">
+                        <span>Lees verder</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="news-item" data-news="toerisme">
+                    <div class="news-category">Toerisme</div>
+                    <h3>Toerisme in opkomst</h3>
+                    <div class="news-date"><i class="fas fa-calendar-alt"></i> 20 januari 2023</div>
+                    <p>Steeds meer toeristen ontdekken de natuurlijke schoonheid van het Rifgebied, wat een positieve impuls geeft aan de lokale economie.</p>
+                    <div class="news-read-more">
+                        <span>Lees verder</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="news-more">
+                <button class="news-button" id="loadMoreNews"><i class="fas fa-plus"></i> Meer nieuws laden</button>
+            </div>
+        </section>
+        
+        <section id="leiders">
+            <div class="section-header">
+                <h2>Belangrijke Historische Leiders</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="filterLeaders"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="section-control" id="sortLeaders"><i class="fas fa-sort"></i> Sorteren</button>
+                </div>
+            </div>
+            
+            <div class="leaders-grid">
+                <div class="leader-card" data-leader="abdelkrim">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Abdelkrim.jpg/220px-Abdelkrim.jpg" alt="Abdelkrim El Khattabi" class="leader-image">
+                    <h3>Abdelkrim El Khattabi</h3>
+                    <div class="leader-period">1882-1963</div>
+                    <p>Leider van de Rif-Republiek en verzetsstrijder tegen Spaanse en Franse kolonisatie.</p>
+                    <div class="leader-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="leader-card" data-leader="mohamed">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mohamed_Ben_Abdelkrim_El_Khattabi.jpg/220px-Mohamed_Ben_Abdelkrim_El_Khattabi.jpg" alt="Mohamed Ben Abdelkrim El Khattabi" class="leader-image">
+                    <h3>Mohamed Ben Abdelkrim</h3>
+                    <div class="leader-period">Onbekend</div>
+                    <p>Broer van Abdelkrim en medeoprichter van de Rif-Republiek.</p>
+                    <div class="leader-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="leader-card" data-leader="nasser">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Nasser_Zefzafi_2017.png/220px-Nasser_Zefzafi_2017.png" alt="Nasser Zefzafi" class="leader-image">
+                    <h3>Nasser Zefzafi</h3>
+                    <div class="leader-period">1978-heden</div>
+                    <p>Leider van de Hirak-protestbeweging in de Rif in 2016-2017.</p>
+                    <div class="leader-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="alfabet">
+            <div class="section-header">
+                <h2>Het Riffijnse Alfabet (Tifinagh)</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="startQuiz"><i class="fas fa-play"></i> Start Quiz</button>
+                    <button class="section-control" id="resetAlphabet"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+            
+            <div class="alphabet-container">
+                <div class="alphabet-header">
+                    <h3>Leer het Tifinagh Alfabet</h3>
+                    <p>Klik op een letter om de uitspraak te horen en details te zien</p>
+                </div>
+                
+                <div class="alphabet-letters">
+                    <div class="letter" data-letter="a" data-audio="a">
+                        ⴰ
+                        <div class="letter-audio">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <div class="letter" data-letter="b" data-audio="b">
+                        ⴱ
+                        <div class="letter-audio">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <div class="letter" data-letter="g" data-audio="g">
+                        ⴳ
+                        <div class="letter-audio">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <div class="letter" data-letter="d" data-audio="d">
+                        ⴷ
+                        <div class="letter-audio">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <div class="letter" data-letter="e" data-audio="e">
+                        ⴻ
+                        <div class="letter-audio">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="letter-info" id="letter-info">
+                    <h3 id="letter-title">Klik op een letter</h3>
+                    <p id="letter-description">Klik op een Tifinagh-letter hierboven om de uitspraak en details te zien.</p>
+                    <button class="audio-button" id="letter-audio-button">
+                        <i class="fas fa-volume-up"></i> Uitspraak afspelen
+                    </button>
+                </div>
+                
+                <div class="alphabet-info">
+                    <p>Het Riffijns (Tarifit) wordt geschreven met het Tifinagh-alfabet, een oud Berberschrift dat tegenwoordig een revival doormaakt. Het moderne Tifinagh-alfabet, zoals hierboven weergegeven, wordt gebruikt voor het schrijven van verschillende Berbertalen, waaronder Tarifit.</p>
+                    <p>Het alfabet wordt van links naar rechts geschreven en bevat zowel medeklinkers als klinkers. In tegenstelling tot het Arabische schrift, dat in Marokko ook veel wordt gebruikt, is Tifinagh een inheems Afrikaans schrift met een geschiedenis die teruggaat tot de oudheid.</p>
+                </div>
+                
+                <div class="quiz-container" id="quizContainer">
+                    <div class="quiz-header">
+                        <h3>Test je kennis van het Tifinagh-alfabet</h3>
+                    </div>
+                    <div class="quiz-progress">
+                        <span id="currentQuestion">Vraag 1/5</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <span id="score">Score: 0/0</span>
+                    </div>
+                    <div class="quiz-question" id="quiz-question">
+                        <p>Welke letter is dit: <span id="question-letter">ⴰ</span> ?</p>
+                    </div>
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Options will be filled by JavaScript -->
+                    </div>
+                    <div class="quiz-result" id="quiz-result">
+                        <!-- Result will be shown here -->
+                    </div>
+                    <button class="quiz-button" id="next-question">Volgende Vraag</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="stammen">
+            <div class="section-header">
+                <h2>Belangrijke Stammen in het Rifgebied</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="filterTribes"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="section-control" id="sortTribes"><i class="fas fa-sort"></i> Sorteren</button>
+                </div>
+            </div>
+            
+            <div class="tribes-grid">
+                <div class="tribe-card" data-tribe="ait-waryaghar">
+                    <div class="tribe-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3>Ait Waryaghar</h3>
+                    <p>Een van de grootste en meest invloedrijke stammen in het Rifgebied, geconcentreerd rond Al Hoceima.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="ibbuqquyen">
+                    <div class="tribe-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Ibbuqquyen</h3>
+                    <p>Bekend om hun terraslandbouw in het westelijke deel van het Rifgebergte.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="ait-ammarth">
+                    <div class="tribe-icon">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <h3>Ait Ammarth</h3>
+                    <p>Bewoners van de noordelijke kustgebieden met een sterke maritieme traditie.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="igzinnayen">
+                    <div class="tribe-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>Igzinnayen</h3>
+                    <p>Bergstam bekend om hun traditionele muziek en dans in het oostelijke Rifgebergte.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="ait-tuzin">
+                    <div class="tribe-icon">
+                        <i class="fas fa-hands"></i>
+                    </div>
+                    <h3>Ait Tuzin</h3>
+                    <p>Stam bekend om hun traditionele handwerk en textielproductie.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="bni-urriaguel">
+                    <div class="tribe-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Bni Urriaguel</h3>
+                    <p>Historisch belangrijke stam die een centrale rol speelde in het verzet tegen kolonisatie.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="ait-seddat">
+                    <div class="tribe-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Ait Seddat</h3>
+                    <p>Stam gespecialiseerd in landbouw en de teelt van olijven en amandelen.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="tribe-card" data-tribe="bni-bu-frah">
+                    <div class="tribe-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Bni Bu Frah</h3>
+                    <p>Stam met een rijke traditie van onderwijs en islamitische geleerdheid.</p>
+                    <div class="tribe-read-more">
+                        <span>Meer informatie</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tribe-detail" id="tribe-detail">
+                <!-- Tribe details will be loaded here -->
+            </div>
+        </section>
+        
+        <section id="media">
+            <div class="section-header">
+                <h2>Media over het Rifgebied</h2>
+                <div class="section-controls">
+                    <button class="section-control" id="filterMedia"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="section-control" id="sortMedia"><i class="fas fa-sort"></i> Sorteren</button>
+                </div>
+            </div>
+            
+            <div class="media-grid">
+                <div class="media-card">
+                    <div class="media-image" style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');" id="playVideo1">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="media-info">
+                        <h3>Documentaire: Het Rifgebergte</h3>
+                        <p>Een documentaire over de geschiedenis en cultuur van het Rifgebied, met aandacht voor traditionele gebruiken en moderne ontwikkelingen.</p>
+                        <button class="media-button" id="watchVideo1">
+                            <i class="fas fa-play"></i> Bekijk video
+                        </button>
+                    </div>
+                </div>
+                <div class="media-card">
+                    <div class="media-image" style="background-image: url('https://images.unsplash.com/photo-1594736797933-d0e64d1b0e0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');" id="viewGallery1">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div class="media-info">
+                        <h3>Architectuur in het Rifgebied</h3>
+                        <p>Foto's van traditionele bouwstijlen en moderne architectuur in de regio, met speciale aandacht voor kasbahs en berberdorpen.</p>
+                        <button class="media-button" id="openGallery1">
+                            <i class="fas fa-eye"></i> Bekijk galerij
+                        </button>
+                    </div>
+                </div>
+                <div class="media-card">
+                    <div class="media-image" style="background-image: url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');" id="playVideo2">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="media-info">
+                        <h3>Stamtradities en verhalen</h3>
+                        <p>Ouderen delen verhalen over tradities en geschiedenis van hun stammen, met focus op mondelinge overlevering.</p>
+                        <button class="media-button" id="watchVideo2">
+                            <i class="fas fa-play"></i> Bekijk video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <div style="margin-left:auto;text-align:right">
-      <p style="margin:0">Inclusief interactieve oefeningen en printsamenvatting</p>
-      <small class="muted">Afbeeldingen: Wikimedia Commons</small>
+    
+    <!-- Modal voor details -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Details</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <p>Hier komen de details van het geselecteerde item.</p>
+            </div>
+        </div>
     </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="card">
-        <img class="cover" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Chauen.jpg" alt="Chefchaouen">
-        <h2>Het Rif — context en kernvragen</h2>
-        <p class="muted">Deze uitgebreide pagina behandelt de hele Rif-regio: west-, midden- en oost-Rif. Nieuw: overzicht van het Berbers alfabet (Tifinagh) met voorbeelden en een kleine oefening.</p>
-        <div class="kpi">
-          <div class="fact"><strong>Belangrijke steden</strong><br>Tanger, Tetouan, Chefchaouen, Al Hoceima</div>
-          <div class="fact"><strong>Belangrijk thema</strong><br>Marginalisatie & protestbewegingen</div>
-          <div class="fact"><strong>Talen</strong><br>Tarifit (Tifinagh), Arabisch</div>
+    
+    <footer>
+        <div class="footer-decoration"></div>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Over het Rifgebied</h3>
+                    <p>Het Rifgebied is een unieke regio in Noord-Marokko met een rijke geschiedenis, cultuur en natuurlijke schoonheid.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Snelle links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inleiding"><i class="fas fa-chevron-right"></i> Inleiding</a></li>
+                        <li><a href="#geografie"><i class="fas fa-chevron-right"></i> Geografie</a></li>
+                        <li><a href="#economie"><i class="fas fa-chevron-right"></i> Economie</a></li>
+                        <li><a href="#cultuur"><i class="fas fa-chevron-right"></i> Cultuur</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a id="emailContact"><i class="fas fa-envelope"></i> farajiwalid17@gmail.com</a></li>
+                        <li><a id="phoneContact"><i class="fas fa-phone"></i> 0485291221</a></li>
+                        <li><a id="locationContact"><i class="fas fa-map-marker-alt"></i> Marokko</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Informatie over het Rifgebied in Marokko</p>
+                <p>Deze pagina is gemaakt voor educatieve doeleinden</p>
+                <p>© 2023 - Alle rechten voorbehouden</p>
+            </div>
         </div>
-      </div>
-
-      <aside class="card">
-        <h4>Snelle navigatie</h4>
-        <div class="tabs" id="topTabs">
-          <div class="tab active" data-target="sec-overview">Overzicht</div>
-          <div class="tab" data-target="sec-history">Geschiedenis</div>
-          <div class="tab" data-target="sec-leaders">Leiders</div>
-          <div class="tab" data-target="sec-tifinagh">Tifinagh</div>
-        </div>
-
-        <div id="sec-overview" class="tabcontent active">
-          <p class="muted">Gebruik de tabs om snel naar secties te springen. Scroll naar beneden voor interactieve onderdelen en printsamenvatting.</p>
-        </div>
-        <div id="sec-history" class="tabcontent">
-          <p class="muted">Diepere geschiedenis en analyses van conflicten en sociale bewegingen.</p>
-        </div>
-        <div id="sec-leaders" class="tabcontent">
-          <p class="muted">Profielen van centrale figuren in Rif-geschiedenis en hedendaagse bewegingen.</p>
-        </div>
-        <div id="sec-tifinagh" class="tabcontent">
-          <p class="muted">Leer het Berbers alfabet (Tifinagh) — tabel en oefening beneden.</p>
-        </div>
-
-        <hr style="margin:12px 0">
-        <h4>Galerij</h4>
-        <div class="gallery" aria-hidden="false">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/RifMountainsInTheChefchaouenProvince.jpg/330px-RifMountainsInTheChefchaouenProvince.jpg" alt="Rif bergen">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Al_Hoceima_mosque.jpg/250px-Al_Hoceima_mosque.jpg" alt="Al Hoceima">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Moroccan_Mediterranean_coast_-_aerial_view.jpg/250px-Moroccan_Mediterranean_coast_-_aerial_view.jpg" alt="Rif kust">
-        </div>
-      </aside>
-    </section>
-
-    <!-- OVERVIEW -->
-    <section id="overview" class="card grid" style="margin-top:18px">
-      <h2>Overzicht — geografie, regio's en cultuur</h2>
-      <div style="display:grid; grid-template-columns:1fr 320px; gap:18px">
-        <div>
-          <h3>Regionale opsplitsing</h3>
-          <p><strong>West-Rif:</strong> Tanger & Tetouan — toerisme en handelscontacten met Europa. <br>
-             <strong>Midden-Rif:</strong> bergdorpen en landbouw. <br>
-             <strong>Oost-Rif:</strong> Al Hoceima en kuststreek — sociaal-economisch kwetsbaar, centrum van protesten (Hirak).</p>
-
-          <h3>Cultuur</h3>
-          <p>De Riffijnen spreken Tarifit (een variant van het Noordelijk Berbers). Tifinagh is het schrift dat in recente decennia ook weer symbolisch en educatief wordt gebruikt — zie de sectie over het alfabet.</p>
-        </div>
-
-        <aside class="card muted">
-          <h4>Quick facts</h4>
-          <p><strong>Hoogste toppen</strong><br>Jbel Tidirhine en andere toppen tot ~2400 m</p>
-          <p><strong>Klimaat</strong><br>Mediterrane invloed, redelijk neerslag in verrijkte gebieden</p>
-        </aside>
-      </div>
-
-      <hr style="margin:14px 0">
-
-      <h3>Tijdlijn — kernmomenten (uitgebreid)</h3>
-      <ul class="timeline">
-        <li><strong>Prehistorie – Oudheid</strong>: Berberbewoning; Feniciërs en later Romeinse handelsposten langs de kust.</li>
-        <li><strong>Middeleeuwen</strong>: lokale emiraten (o.a. Nekor), islamisering en handelsnetwerken.</li>
-        <li><strong>15e–19e eeuw</strong>: Andalusische migratie beïnvloedt architectuur en cultuur.</li>
-        <li><strong>1921–1926 — Rif War</strong>: Abd el-Krim leidt opstand; uitroeping van de Republiek van het Rif; neergeslagen door gezamenlijke Franse en Spaanse militaire acties.</li>
-        <li><strong>1958–1959 — Rif Revolt</strong>: opstand tegen marginalisatie; zware staatsreactie.</li>
-        <li><strong>2016–2017 — Hirak Rif</strong>: protest na de dood van Mouhcine Fikri; Nasser Zefzafi prominent; arrestaties en internationale aandacht.</li>
-        <li><strong>2020s</strong>: aanhoudende sociale-economische uitdagingen; hervormingsbelofte maar langzame uitvoering.</li>
-      </ul>
-    </section>
-
-    <!-- HISTORY / DOCUMENTARY -->
-    <section id="history" class="card" style="margin-top:18px">
-      <h2>Gedetailleerde geschiedenis & analyses</h2>
-
-      <article>
-        <h3>Rif War (1921–1926) — kernanalyse</h3>
-        <p>
-          De Rif War staat bekend als één van de meest opmerkelijke anti-koloniale opstanden in Noord-Afrika. Onder leiding van Abd el-Krim
-          gaven Riffijnse milities Spanje (en later in samenwerking met Frankrijk) zware verliezen en riepen ze de Republiek van het Rif uit.
-          De oorlog eindigde pas na grootschalige militaire interventies, inclusief bombardementen en internationale diplomatie.
-        </p>
-      </article>
-
-      <article>
-        <h3>1958-opstand & nasleep</h3>
-        <p>
-          De 1958-opstand toonde aan dat onafhankelijkheid niet automatisch leidde tot gelijke ontwikkeling. De harde reactie van de
-          monarchie en langdurige militaire aanwezigheid leidden tot blijvend wantrouwen en sociale spanningen.
-        </p>
-      </article>
-
-      <article>
-        <h3>Hirak (2016–2017) — beweging en betekenis</h3>
-        <p>
-          Hirak begon als lokale woede maar groeide uit tot een georganiseerde beweging die systemische problemen aan de kaak stelde:
-          gebrek aan banen, slechte infrastructuur en straffeloosheid bij economische misstanden. Hirak liet zien dat verbindingen tussen
-          diaspora, media en lokale organisaties moderne politieke mobilisatie vergemakkelijken.
-        </p>
-      </article>
-    </section>
-
-    <!-- LEADERS -->
-    <section id="leaders" class="card" style="margin-top:18px">
-      <h2>Belangrijke leiders & figuren (uitgebreid)</h2>
-
-      <div class="leader">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Abd_el-Krim_1922.jpg/220px-Abd_el-Krim_1922.jpg" alt="Abd el-Krim">
-        <div>
-          <strong>Abd el-Krim (1882–1963)</strong>
-          <p class="muted">Leider van de Rif-opstand; voorzitter van de Republiek van het Rif; strategisch en symbolisch belangrijk voor anti-koloniale bewegingen in Noord-Afrika.</p>
-        </div>
-      </div>
-
-      <div class="leader">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mohammed_V_of_Morocco.jpg/220px-Mohammed_V_of_Morocco.jpg" alt="Mohammed V">
-        <div>
-          <strong>Mohammed V (1909–1961)</strong>
-          <p class="muted">Sultan en later koning tijdens de onafhankelijkheid van Marokko; zijn opvolgers hadden een centrale rol in de reacties op Rif-opstanden.</p>
-        </div>
-      </div>
-
-      <div class="leader">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Hassan_II_of_Morocco.jpg/220px-Hassan_II_of_Morocco.jpg" alt="Hassan II">
-        <div>
-          <strong>Hassan II (1929–1999)</strong>
-          <p class="muted">Koning tijdens de 1958-opstand; beleid en repressie in zijn periode beïnvloedden langdurige regio-overheersing.</p>
-        </div>
-      </div>
-
-      <div class="leader">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mohammed_VI_of_Morocco.jpg/220px-Mohammed_VI_of_Morocco.jpg" alt="Mohammed VI">
-        <div>
-          <strong>Mohammed VI (1963– )</strong>
-          <p class="muted">Huidige koning. Heeft hervormingsprogramma’s aangekondigd; regio's zoals het Rif wachten op concrete en duurzame implementatie.</p>
-        </div>
-      </div>
-
-      <div class="leader">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Nasser_Zefzafi.jpg/220px-Nasser_Zefzafi.jpg" alt="Nasser Zefzafi" onerror="this.style.display='none'">
-        <div>
-          <strong>Nasser Zefzafi (°1989)</strong>
-          <p class="muted">Prominente leider van Hirak Rif. Zijn arrestatie leidde tot internationale aandacht en discussie over protestvrijheid en procesvoering in Marokko.</p>
-        </div>
-      </div>
-
-      <p class="muted"><small>Er zijn veel lokale leiders, gemeentelijke vertegenwoordigers, activisten en gemeenschapsfiguren die lokaal invloedrijk zijn — dit is een selectie van prominente namen.</small></p>
-    </section>
-
-    <!-- TIFINAGH / BERBERS ALPHABET -->
-    <section id="tifinagh" class="card" style="margin-top:18px">
-      <h2>Tifinagh — het Berbers alfabet (inleiding & tabel)</h2>
-      <p>
-        Tifinagh is het traditionele schrift dat door Berber-gemeenschappen (Amazigh) wordt gebruikt. In moderne contexten wordt een
-        gestandaardiseerde vorm (Neo-Tifinagh) vaak gebruikt voor onderwijs, symboliek en herkenning van taalrechten. Hieronder vind je een
-        overzicht van veelgebruikte letters (Neo-Tifinagh), met Unicode-codepoint, Latijnse transliteratie en voorbeeldwoorden (Tarifit).
-      </p>
-
-      <h3>Uitleg / aanwijzingen</h3>
-      <ul>
-        <li>Tifinagh gebruikt losse tekens — in schriftelijke educatie worden vaak Latijnse transliteraties gebruikt naast Tifinagh.</li>
-        <li>De voorbeelden hieronder zijn benaderingen voor uitspraak; dialecten (bv. Tarifit) variëren lokaal.</li>
-      </ul>
-
-      <h3>Tabel: veelgebruikte Neo-Tifinagh letters</h3>
-      <table>
-        <thead>
-          <tr><th>Tifinagh</th><th>Unicode</th><th>Latijn</th><th>Voorbeeld (Tarifit)</th><th>Betekenis / opmerking</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="tifinagh-char">ⴰ</td><td>U+2D30</td><td>a</td><td>ⴰman — aman</td><td>klinker a</td></tr>
-          <tr><td class="tifinagh-char">ⴱ</td><td>U+2D31</td><td>b</td><td>ⴱab — bab</td><td>consonant b</td></tr>
-          <tr><td class="tifinagh-char">ⴳ</td><td>U+2D33</td><td>g</td><td>ⴳur — gur</td><td>g-klank</td></tr>
-          <tr><td class="tifinagh-char">ⴷ</td><td>U+2D37</td><td>d</td><td>ⴷar — dar</td><td>d-klank</td></tr>
-          <tr><td class="tifinagh-char">ⴹ</td><td>U+2D39</td><td>ḍ</td><td>—</td><td>emfatische d</td></tr>
-          <tr><td class="tifinagh-char">ⴻ</td><td>U+2D3B</td><td>e/ə</td><td>ⴻxx — voorbeeld</td><td>korte klinker</td></tr>
-          <tr><td class="tifinagh-char">ⵣ</td><td>U+2D63</td><td>z</td><td>ⵣru — zru</td><td>z-klank</td></tr>
-          <tr><td class="tifinagh-char">ⵎ</td><td>U+2D4E</td><td>m</td><td>ⵎama — mama</td><td>m-klank</td></tr>
-          <tr><td class="tifinagh-char">ⵔ</td><td>U+2D54</td><td>r</td><td>ⵔif — rif</td><td>r-klank</td></tr>
-          <tr><td class="tifinagh-char">ⵣ</td><td>U+2D63</td><td>z</td><td>ⵣrara — zrar(a)</td><td>tweede z-voorbeeld</td></tr>
-          <tr><td class="tifinagh-char">ⵣⵣ</td><td>—</td><td>zz</td><td>—</td><td>dubbelle klank mogelijk</td></tr>
-        </tbody>
-      </table>
-
-      <p class="muted" style="margin-top:8px">Opmerking: dit is een beknopt overzicht — voor een volledig alfabet (Neo-Tifinagh) zijn er ~33-teken sets en varianten. De Unicode-bloks voor Tifinagh lopen van U+2D30 tot U+2D7F.</p>
-
-      <hr style="margin:12px 0">
-
-      <h3>Interactieve oefening — herkentekens</h3>
-      <p>Klik op een vakje om de Latijnse transliteratie te zien. (Kleine oefening om teken → klank te matchen.)</p>
-      <div class="quiz-grid" id="quiz">
-        <!-- items toegevoegd via JS -->
-      </div>
-      <div style="margin-top:10px" class="muted"><small>Tip: gebruik dit om visueel te leren — combineer met luisteren naar lokale sprekers om uitspraak te oefenen.</small></div>
-    </section>
-
-    <!-- SUMMARY / PRINT -->
-    <section id="summary" class="card" style="margin-top:18px">
-      <h2>Printsamenvatting & aanbevelingen</h2>
-      <p><strong>Samenvatting</strong></p>
-      <p>Het Rif is een historisch en cultureel rijk gebied van Noord-Marokko met een unieke mix van Berberidentiteit, kuststeden en bergdorpen. Belangrijke historische gebeurtenissen (Rif War, 1958-opstand, Hirak) laten de spanningen tussen centrale macht en regionale verwachtingen zien. Het herstel van Tifinagh en taalonderwijs versterkt moderne culturele identiteit en biedt tegelijk kansen voor lokaal onderwijs en behoud van taal. Duurzame ontwikkeling vereist gerichte investeringen, infrastructuur en inclusief bestuur.</p>
-      <p style="margin-top:8px"><a class="btn" href="#" onclick="window.print();return false">Print deze samenvatting (A4-ready)</a></p>
-    </section>
-
-    <!-- SOURCES -->
-    <footer class="card" style="margin-top:18px">
-      <h3>Bronnen & verder lezen</h3>
-      <ol class="muted sources">
-        <li>Algemene overzichtsartikelen over het Rif (geografie & geschiedenis) — geverifieerde bronnen zoals Britannica en academische artikelen.</li>
-        <li>Rif War & Abd el-Krim — historische literatuur en biografieën.</li>
-        <li>Hirak Rif (2016–2017) — nieuwsanalyses en rapporten van mensenrechtenorganisaties.</li>
-        <li>Tifinagh & Amazigh taal — UNESCO, linguïstische studies en Unicode documentatie over Tifinagh (U+2D30–U+2D7F).</li>
-      </ol>
-
-      <p class="muted" style="margin-top:12px">Notitie: afbeeldingen zijn gelinkt naar Wikimedia Commons in de offline-versie; controleer auteursrechten voor commercieel gebruik.</p>
     </footer>
-  </main>
 
-  <script>
-    // Top tabs
-    document.querySelectorAll('#topTabs .tab').forEach(t=>{
-      t.addEventListener('click', ()=>{
-        document.querySelectorAll('#topTabs .tab').forEach(x=>x.classList.remove('active'));
-        document.querySelectorAll('#topTabs .tabcontent').forEach(c=>c.classList.remove('active'));
-        t.classList.add('active');
-        const target = document.getElementById(t.dataset.target);
-        if(target) target.classList.add('active');
-      });
-    });
-
-    // Ensure main interactive tabs (if present) work
-    document.querySelectorAll('.tabs .tab').forEach(t=>{
-      t.addEventListener('click', ()=> {
-        const parent = t.parentElement;
-        // if part of topTabs handled above, skip duplicates.
-      });
-    });
-
-    // Tifinagh quiz: letters array (sample subset)
-    const letters = [
-      {char:'ⴰ', latin:'a', note:'klinker a'},
-      {char:'ⴱ', latin:'b', note:'b'},
-      {char:'ⴳ', latin:'g', note:'g'},
-      {char:'ⴷ', latin:'d', note:'d'},
-      {char:'ⴹ', latin:'ḍ', note:'emfatische d'},
-      {char:'ⴻ', latin:'e', note:'korte e'},
-      {char:'ⵣ', latin:'z', note:'z'},
-      {char:'ⵎ', latin:'m', note:'m'},
-      {char:'ⵔ', latin:'r', note:'r'}
-    ];
-
-    // render quiz items
-    const quiz = document.getElementById('quiz');
-    letters.forEach((L, i) => {
-      const item = document.createElement('div');
-      item.className = 'quiz-item';
-      item.innerHTML = `<div class="tifinagh-char">${L.char}</div><div style="margin-top:8px;font-weight:700">Klik om te onthullen</div><div class="reveal" style="display:none">${L.latin} — ${L.note}</div>`;
-      item.addEventListener('click', ()=> {
-        const rv = item.querySelector('.reveal');
-        if(rv.style.display === 'none') rv.style.display = 'inline-block';
-        else rv.style.display = 'none';
-      });
-      quiz.appendChild(item);
-    });
-
-    // Basic accessibility: enable keyboard reveal
-    document.querySelectorAll('.quiz-item').forEach((el, idx) => {
-      el.tabIndex = 0;
-      el.addEventListener('keydown', (e)=> {
-        if(e.key === 'Enter' || e.key === ' ') el.click();
-      });
-    });
-
-    // Small enhancement: set focus to first quiz item on load
-    (function(){ const first = document.querySelector('.quiz-item'); if(first) first.focus(); })();
-  </script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // JavaScript code voor interactieve elementen
+        document.addEventListener('DOMContentLoaded', function() {
+            // Interactieve kaart initialiseren
+            const map = L.map('map').setView([35.0, -4.0], 8);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Markeringen toevoegen voor belangrijke plaatsen in het Rifgebied
+            const locations = [
+                { name: "Al Hoceima", coords: [35.2476, -3.9311], description: "Belangrijke stad aan de kust" },
+                { name: "Nador", coords: [35.1686, -2.9276], description: "Stad aan de Middellandse Zee" },
+                { name: "Taza", coords: [34.2139, -4.0067], description: "Historische stad aan de rand van het Rifgebergte" },
+                { name: "Chefchaouen", coords: [35.1714, -5.2694], description: "Blauwe stad in het westelijke Rifgebergte" },
+                { name: "Jbel Tidirhine", coords: [34.8667, -4.5167], description: "Hoogste punt van het Rifgebergte (2456m)" }
+            ];
+            
+            locations.forEach(location => {
+                L.marker(location.coords)
+                    .addTo(map)
+                    .bindPopup(`<b>${location.name}</b><br>${location.description}`);
+            });
+            
+            // Alfabet interactie
+            const letters = document.querySelectorAll('.letter');
+            const letterInfo = document.getElementById('letter-info');
+            const letterTitle = document.getElementById('letter-title');
+            const letterDescription = document.getElementById('letter-description');
+            const letterAudioButton = document.getElementById('letter-audio-button');
+            
+            // Letter informatie object
+            const letterData = {
+                'a': { 
+                    name: 'Ya', 
+                    pronunciation: 'Als "a" in "kat"',
+                    audio: 'a',
+                    description: 'De basis klinker in het Riffijns, vergelijkbaar met de Nederlandse "a".'
+                },
+                'b': { 
+                    name: 'Yab', 
+                    pronunciation: 'Als "b" in "bal"',
+                    audio: 'b',
+                    description: 'Een bilabiale plosief, net als in het Nederlands.'
+                },
+                'g': { 
+                    name: 'Yag', 
+                    pronunciation: 'Als "g" in "goal"',
+                    audio: 'g',
+                    description: 'Een velaire plosief, altijd hard uitgesproken zoals in "goal".'
+                },
+                'd': { 
+                    name: 'Yad', 
+                    pronunciation: 'Als "d" in "dak"',
+                    audio: 'd',
+                    description: 'Een alveolaire plosief, vergelijkbaar met de Nederlandse "d".'
+                },
+                'e': { 
+                    name: 'Yey', 
+                    pronunciation: 'Als "e" in "pet"',
+                    audio: 'e',
+                    description: 'Een gesloten klinker, zoals in het Engelse "pet".'
+                }
+            };
+            
+            let currentLetter = null;
+            
+            // Letter klik event
+            letters.forEach(letter => {
+                letter.addEventListener('click', function() {
+                    // Verwijder actieve klasse van alle letters
+                    letters.forEach(l => l.classList.remove('active'));
+                    
+                    // Voeg actieve klasse toe aan geklikte letter
+                    this.classList.add('active');
+                    
+                    // Haal letter data op
+                    const letterChar = this.getAttribute('data-letter');
+                    const data = letterData[letterChar];
+                    currentLetter = letterChar;
+                    
+                    // Update letter info
+                    letterTitle.textContent = `Letter: ${this.textContent.trim()} (${data.name})`;
+                    letterDescription.innerHTML = `<strong>Uitspraak:</strong> ${data.pronunciation}<br><br><strong>Beschrijving:</strong> ${data.description}`;
+                    
+                    // Toon letter info
+                    letterInfo.classList.add('active');
+                });
+            });
+            
+            // Audio button
+            letterAudioButton.addEventListener('click', function() {
+                if (currentLetter) {
+                    // In een echte implementatie zou hier een audio-bestand afgespeeld worden
+                    const utterance = new SpeechSynthesisUtterance(`De letter ${currentLetter} wordt uitgesproken als ${letterData[currentLetter].pronunciation}`);
+                    utterance.lang = 'nl-NL';
+                    speechSynthesis.speak(utterance);
+                }
+            });
+            
+            // Quiz functionaliteit
+            const quizContainer = document.getElementById('quizContainer');
+            const quizQuestion = document.getElementById('question-letter');
+            const quizOptions = document.getElementById('quiz-options');
+            const quizResult = document.getElementById('quiz-result');
+            const nextButton = document.getElementById('next-question');
+            const currentQuestionElem = document.getElementById('currentQuestion');
+            const progressFill = document.getElementById('progressFill');
+            const scoreElem = document.getElementById('score');
+            const startQuizButton = document.getElementById('startQuiz');
+            const resetAlphabetButton = document.getElementById('resetAlphabet');
+            
+            let currentQuestion = 0;
+            let score = 0;
+            let quizActive = false;
+            
+            // Quiz vragen met willekeurige antwoordposities
+            const questions = [
+                { 
+                    letter: 'ⴰ', 
+                    options: ['a', 'b', 'g', 'd'], 
+                    correct: 0 
+                },
+                { 
+                    letter: 'ⴱ', 
+                    options: ['b', 'a', 'f', 'h'], 
+                    correct: 0 
+                },
+                { 
+                    letter: 'ⴳ', 
+                    options: ['g', 'j', 'k', 'l'], 
+                    correct: 0 
+                },
+                { 
+                    letter: 'ⴷ', 
+                    options: ['d', 't', 'r', 's'], 
+                    correct: 0 
+                },
+                { 
+                    letter: 'ⴻ', 
+                    options: ['e', 'i', 'u', 'o'], 
+                    correct: 0 
+                }
+            ];
+            
+            // Functie om array willekeurig te shufflen
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+            
+            // Start quiz
+            startQuizButton.addEventListener('click', function() {
+                quizActive = true;
+                currentQuestion = 0;
+                score = 0;
+                loadQuestion();
+                quizContainer.style.display = 'block';
+                updateProgress();
+            });
+            
+            // Reset alfabet
+            resetAlphabetButton.addEventListener('click', function() {
+                letters.forEach(l => l.classList.remove('active'));
+                letterInfo.classList.remove('active');
+                quizContainer.style.display = 'none';
+                quizActive = false;
+            });
+            
+            function loadQuestion() {
+                if (currentQuestion >= questions.length) {
+                    showFinalResults();
+                    return;
+                }
+                
+                const question = questions[currentQuestion];
+                quizQuestion.textContent = question.letter;
+                
+                // Wis vorige opties
+                quizOptions.innerHTML = '';
+                
+                // Shuffle de opties voor willekeurige positie
+                const shuffledOptions = shuffleArray([...question.options]);
+                const correctIndex = shuffledOptions.indexOf(question.options[question.correct]);
+                
+                // Update de correcte index in de vraag
+                questions[currentQuestion].correct = correctIndex;
+                
+                // Voeg nieuwe opties toe
+                shuffledOptions.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'quiz-option';
+                    optionElement.textContent = option;
+                    optionElement.addEventListener('click', function() {
+                        checkAnswer(index);
+                    });
+                    quizOptions.appendChild(optionElement);
+                });
+                
+                // Verberg resultaat
+                quizResult.classList.remove('active');
+                nextButton.style.display = 'none';
+                
+                // Update voortgang
+                updateProgress();
+            }
+            
+            function checkAnswer(selectedIndex) {
+                if (!quizActive) return;
+                
+                const question = questions[currentQuestion];
+                const options = document.querySelectorAll('.quiz-option');
+                
+                // Markeer correct en incorrecte antwoorden
+                options.forEach((option, index) => {
+                    if (index === question.correct) {
+                        option.classList.add('correct');
+                    } else if (index === selectedIndex) {
+                        option.classList.add('incorrect');
+                    }
+                    option.style.pointerEvents = 'none';
+                });
+                
+                // Toon resultaat
+                if (selectedIndex === question.correct) {
+                    quizResult.textContent = 'Correct! Goed gedaan.';
+                    quizResult.style.color = 'green';
+                    quizResult.style.backgroundColor = '#e8f5e8';
+                    score++;
+                } else {
+                    quizResult.textContent = `Helaas, het juiste antwoord is: ${question.options[question.correct]}`;
+                    quizResult.style.color = 'red';
+                    quizResult.style.backgroundColor = '#ffebee';
+                }
+                
+                quizResult.classList.add('active');
+                nextButton.style.display = 'block';
+                updateProgress();
+            }
+            
+            function updateProgress() {
+                const progress = ((currentQuestion) / questions.length) * 100;
+                progressFill.style.width = `${progress}%`;
+                currentQuestionElem.textContent = `Vraag ${currentQuestion + 1}/${questions.length}`;
+                scoreElem.textContent = `Score: ${score}/${currentQuestion}`;
+            }
+            
+            function showFinalResults() {
+                quizQuestion.textContent = 'Quiz voltooid!';
+                quizOptions.innerHTML = '';
+                quizResult.textContent = `Je eindscore: ${score} van de ${questions.length}`;
+                quizResult.classList.add('active');
+                nextButton.textContent = 'Quiz opnieuw beginnen';
+                nextButton.onclick = function() {
+                    quizActive = true;
+                    currentQuestion = 0;
+                    score = 0;
+                    loadQuestion();
+                };
+                updateProgress();
+            }
+            
+            nextButton.addEventListener('click', function() {
+                if (currentQuestion >= questions.length) {
+                    // Begin opnieuw
+                    currentQuestion = 0;
+                    score = 0;
+                    loadQuestion();
+                } else {
+                    currentQuestion++;
+                    loadQuestion();
+                }
+            });
+            
+            // Modal functionaliteit
+            const modal = document.getElementById('detailModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModal = document.getElementById('closeModal');
+            
+            // Sluit modal wanneer er buiten geklikt wordt
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+            
+            // Sluit modal met de sluitknop
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+            
+            // Stammen filter functionaliteit
+            const tribeCards = document.querySelectorAll('.tribe-card');
+            const tribeDetail = document.getElementById('tribe-detail');
+            
+            // Stammen data
+            const tribeData = {
+                'ait-waryaghar': {
+                    name: 'Ait Waryaghar',
+                    description: 'De Ait Waryaghar is een van de grootste en meest invloedrijke stammen in het Rifgebied. Ze zijn geconcentreerd rond de stad Al Hoceima en hebben een rijke geschiedenis van verzet tegen buitenlandse invloeden.',
+                    population: 'Ongeveer 400.000',
+                    region: 'Centraal Rifgebergte',
+                    traditions: 'Traditionele landbouw, veehouderij en handwerk'
+                },
+                'ibbuqquyen': {
+                    name: 'Ibbuqquyen',
+                    description: 'De Ibbuqquyen staan bekend om hun ingenieuze terraslandbouw in het westelijke deel van het Rifgebergte. Ze hebben eeuwenoude technieken ontwikkeld om op steile hellingen gewassen te verbouwen.',
+                    population: 'Ongeveer 150.000',
+                    region: 'Westelijk Rifgebergte',
+                    traditions: 'Terraslandbouw, olijventeelt, amandelteelt'
+                },
+                'ait-ammarth': {
+                    name: 'Ait Ammarth',
+                    description: 'De Ait Ammarth bewonen de noordelijke kustgebieden van het Rifgebied en hebben een sterke maritieme traditie. Visserij en handel over zee zijn belangrijke economische activiteiten.',
+                    population: 'Ongeveer 120.000',
+                    region: 'Noordelijke kustgebieden',
+                    traditions: 'Visserij, scheepsbouw, handel'
+                },
+                'igzinnayen': {
+                    name: 'Igzinnayen',
+                    description: 'De Igzinnayen zijn een bergstam bekend om hun traditionele muziek en dans. Ze hebben een rijke orale traditie en hun muziek wordt gekenmerkt door complexe ritmes en poëtische teksten.',
+                    population: 'Ongeveer 90.000',
+                    region: 'Oostelijk Rifgebergte',
+                    traditions: 'Muziek, dans, poëzie, orale geschiedenis'
+                },
+                'ait-tuzin': {
+                    name: 'Ait Tuzin',
+                    description: 'De Ait Tuzin staan bekend om hun traditionele handwerk en textielproductie. Ze produceren hoogwaardige tapijten, dekens en kleding met traditionele patronen en kleuren.',
+                    population: 'Ongeveer 80.000',
+                    region: 'Zuidelijk Rifgebergte',
+                    traditions: 'Textielproductie, tapijtweven, handwerk'
+                },
+                'bni-urriaguel': {
+                    name: 'Bni Urriaguel',
+                    description: 'De Bni Urriaguel is een historisch belangrijke stam die een centrale rol speelde in het verzet tegen kolonisatie. Ze staan bekend om hun krijgstraditie en onafhankelijkheidsgeest.',
+                    population: 'Ongeveer 110.000',
+                    region: 'Centraal Rifgebergte',
+                    traditions: 'Krijgstraditie, verzet, politieke organisatie'
+                },
+                'ait-seddat': {
+                    name: 'Ait Seddat',
+                    description: 'De Ait Seddat zijn gespecialiseerd in landbouw en de teelt van olijven en amandelen. Ze hebben uitgebreide kennis van lokale gewassen en landbouwtechnieken.',
+                    population: 'Ongeveer 100.000',
+                    region: 'Westelijk Rifgebergte',
+                    traditions: 'Landbouw, olijventeelt, amandelteelt'
+                },
+                'bni-bu-frah': {
+                    name: 'Bni Bu Frah',
+                    description: 'De Bni Bu Frah hebben een rijke traditie van onderwijs en islamitische geleerdheid. Ze hebben door de eeuwen heen vele geleerden en religieuze leiders voortgebracht.',
+                    population: 'Ongeveer 70.000',
+                    region: 'Oostelijk Rifgebergte',
+                    traditions: 'Onderwijs, islamitische studies, religieuze leiderschap'
+                }
+            };
+            
+            // Tribe card klik event
+            tribeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const tribeId = this.getAttribute('data-tribe');
+                    const data = tribeData[tribeId];
+                    
+                    // Toon stammen details
+                    tribeDetail.innerHTML = `
+                        <h3>${data.name}</h3>
+                        <p><strong>Beschrijving:</strong> ${data.description}</p>
+                        <p><strong>Bevolking:</strong> ${data.population}</p>
+                        <p><strong>Regio:</strong> ${data.region}</p>
+                        <p><strong>Tradities:</strong> ${data.traditions}</p>
+                    `;
+                    tribeDetail.classList.add('active');
+                    
+                    // Scroll naar details
+                    tribeDetail.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Filter functionaliteit voor stammen
+            document.getElementById('filterTribes').addEventListener('click', function() {
+                modalTitle.textContent = 'Filter Stammen';
+                modalBody.innerHTML = `
+                    <p>Filter stammen op regio:<br><br>
+                    <label><input type="checkbox" checked> Centraal Rifgebergte</label><br>
+                    <label><input type="checkbox" checked> Westelijk Rifgebergte</label><br>
+                    <label><input type="checkbox" checked> Oostelijk Rifgebergte</label><br>
+                    <label><input type="checkbox" checked> Zuidelijk Rifgebergte</label><br>
+                    <label><input type="checkbox" checked> Noordelijke kustgebieden</label></p>
+                    <button class="quiz-button" style="margin-top: 15px;">Filter Toepassen</button>
+                `;
+                modal.classList.add('active');
+            });
+            
+            // Sorteer functionaliteit voor stammen
+            document.getElementById('sortTribes').addEventListener('click', function() {
+                modalTitle.textContent = 'Sorteer Stammen';
+                modalBody.innerHTML = `
+                    <p>Sorteer stammen op:<br><br>
+                    <button class="quiz-button" style="margin: 5px;">Alfabetisch</button>
+                    <button class="quiz-button" style="margin: 5px;">Bevolkingsgrootte</button>
+                    <button class="quiz-button" style="margin: 5px;">Regio</button></p>
+                `;
+                modal.classList.add('active');
+            });
+            
+            // Sectie controls
+            const sectionControls = {
+                // Inleiding sectie
+                shareIntro: function() {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Het Rifgebied in Marokko',
+                            text: 'Leer meer over het Rifgebied in Marokko',
+                            url: window.location.href
+                        });
+                    } else {
+                        modalTitle.textContent = 'Delen';
+                        modalBody.innerHTML = '<p>Deel deze pagina via: <br><br><button style="background: #3b5998; color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Facebook</button> <button style="background: #1da1f2; color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Twitter</button> <button style="background: #0077b5; color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">LinkedIn</button></p>';
+                        modal.classList.add('active');
+                    }
+                },
+                
+                printIntro: function() {
+                    window.print();
+                },
+                
+                // Geografie sectie
+                showMap: function() {
+                    modalTitle.textContent = 'Kaart van het Rifgebied';
+                    modalBody.innerHTML = '<p>Hier zou een interactieve kaart van het Rifgebied verschijnen.</p><div style="height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">[Interactieve Kaart]</div>';
+                    modal.classList.add('active');
+                },
+                
+                downloadGeo: function() {
+                    modalTitle.textContent = 'Download Geografische Informatie';
+                    modalBody.innerHTML = '<p>Download opties:<br><br><button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">PDF Rapport</button> <button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Kaart (JPG)</button> <button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Data (CSV)</button></p>';
+                    modal.classList.add('active');
+                },
+                
+                // Economie sectie
+                showStats: function() {
+                    modalTitle.textContent = 'Economische Statistieken';
+                    modalBody.innerHTML = '<p>Gedetailleerde economische statistieken van het Rifgebied:</p><div style="height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">[Grafieken en Statistieken]</div>';
+                    modal.classList.add('active');
+                },
+                
+                showExport: function() {
+                    modalTitle.textContent = 'Export Informatie';
+                    modalBody.innerHTML = '<p>Belangrijke exportproducten uit het Rifgebied:</p><ul><li>Olijven en olijfolie</li><li>Amandelen en vijgen</li><li>Vis en zeevruchten</li><li>Handwerk en textiel</li><li>Arganolie</li></ul>';
+                    modal.classList.add('active');
+                },
+                
+                // Cultuur sectie
+                filterCulture: function() {
+                    modalTitle.textContent = 'Filter Cultuur Items';
+                    modalBody.innerHTML = '<p>Filter opties:<br><br><label><input type="checkbox" checked> Traditionele Kleding</label><br><label><input type="checkbox" checked> Architectuur</label><br><label><input type="checkbox" checked> Muziek en Dans</label><br><label><input type="checkbox"> Keuken</label><br><label><input type="checkbox"> Festivals</label></p>';
+                    modal.classList.add('active');
+                },
+                
+                sortCulture: function() {
+                    modalTitle.textContent = 'Sorteer Cultuur Items';
+                    modalBody.innerHTML = '<p>Sorteer op:<br><br><button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Alfabetisch</button> <button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Belangrijkheid</button> <button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Chronologisch</button></p>';
+                    modal.classList.add('active');
+                }
+            };
+            
+            // Koppel sectie controls aan functies
+            document.getElementById('shareIntro').addEventListener('click', sectionControls.shareIntro);
+            document.getElementById('printIntro').addEventListener('click', sectionControls.printIntro);
+            document.getElementById('showMap').addEventListener('click', sectionControls.showMap);
+            document.getElementById('downloadGeo').addEventListener('click', sectionControls.downloadGeo);
+            document.getElementById('showStats').addEventListener('click', sectionControls.showStats);
+            document.getElementById('showExport').addEventListener('click', sectionControls.showExport);
+            document.getElementById('filterCulture').addEventListener('click', sectionControls.filterCulture);
+            document.getElementById('sortCulture').addEventListener('click', sectionControls.sortCulture);
+            
+            // Voor andere secties, voeg vergelijkbare functies toe
+            document.getElementById('filterNews').addEventListener('click', function() {
+                modalTitle.textContent = 'Filter Nieuws';
+                modalBody.innerHTML = '<p>Filter nieuws op categorie:<br><br><label><input type="checkbox" checked> Ontwikkeling</label><br><label><input type="checkbox" checked> Cultuur</label><br><label><input type="checkbox" checked> Toerisme</label><br><label><input type="checkbox"> Politiek</label><br><label><input type="checkbox"> Economie</label></p>';
+                modal.classList.add('active');
+            });
+            
+            document.getElementById('sortNews').addEventListener('click', function() {
+                modalTitle.textContent = 'Sorteer Nieuws';
+                modalBody.innerHTML = '<p>Sorteer nieuws op:<br><br><button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Datum (nieuwste eerst)</button> <button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Datum (oudste eerst)</button> <button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Relevantie</button></p>';
+                modal.classList.add('active');
+            });
+            
+            document.getElementById('loadMoreNews').addEventListener('click', function() {
+                modalTitle.textContent = 'Meer Nieuws';
+                modalBody.innerHTML = '<p>Er worden meer nieuwsartikelen geladen...</p><div style="height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">[Meer nieuwsartikelen]</div>';
+                modal.classList.add('active');
+            });
+            
+            // Media sectie knoppen
+            document.getElementById('playVideo1').addEventListener('click', function() {
+                modalTitle.textContent = 'Documentaire: Het Rifgebergte';
+                modalBody.innerHTML = '<p>Bekijk de documentaire over het Rifgebergte:</p><div style="height: 300px; background: #000; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0; color: white;">[Video Speler]</div>';
+                modal.classList.add('active');
+            });
+            
+            document.getElementById('watchVideo1').addEventListener('click', function() {
+                modalTitle.textContent = 'Documentaire: Het Rifgebergte';
+                modalBody.innerHTML = '<p>Bekijk de documentaire over het Rifgebergte:</p><div style="height: 300px; background: #000; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0; color: white;">[Video Speler]</div>';
+                modal.classList.add('active');
+            });
+            
+            // Footer contact knoppen
+            document.getElementById('emailContact').addEventListener('click', function() {
+                modalTitle.textContent = 'Contact via E-mail';
+                modalBody.innerHTML = '<p>Stuur een e-mail naar: <strong>farajiwalid17@gmail.com</strong></p><p><button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">E-mail openen</button></p>';
+                modal.classList.add('active');
+            });
+            
+            document.getElementById('phoneContact').addEventListener('click', function() {
+                modalTitle.textContent = 'Contact via Telefoon';
+                modalBody.innerHTML = '<p>Bel ons op: <strong>0485291221</strong></p><p><button style="background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; margin: 5px; cursor: pointer;">Nu bellen</button></p>';
+                modal.classList.add('active');
+            });
+            
+            document.getElementById('locationContact').addEventListener('click', function() {
+                modalTitle.textContent = 'Onze Locatie';
+                modalBody.innerHTML = '<p>Het Rifgebied bevindt zich in het noorden van Marokko.</p><div style="height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">[Kaart van Marokko]</div>';
+                modal.classList.add('active');
+            });
+            
+            // Andere interactieve elementen
+            document.getElementById('mapTrigger').addEventListener('click', sectionControls.showMap);
+            
+            // Geografie features
+            document.getElementById('featureHeight').addEventListener('click', function() {
+                modalTitle.textContent = 'Hoogste Punt: Jbel Tidirhine';
+                modalBody.innerHTML = '<p>De Jbel Tidirhine is met 2456 meter het hoogste punt van het Rifgebergte. De berg biedt een adembenemend uitzicht over de regio en is populair bij bergbeklimmers.</p><div style="height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin: 15px 0;">[Foto van Jbel Tidirhine]</div>';
+                modal.classList.add('active');
+            });
+            
+            // Economie sectors
+            document.getElementById('sectorAgriculture').addEventListener('click', function() {
+                modalTitle.textContent = 'Landbouw in het Rifgebied';
+                modalBody.innerHTML = '<p>De landbouw in het Rifgebied is traditioneel en divers. Belangrijke producten zijn:</p><ul><li>Olijven en olijfolie</li><li>Amandelen en vijgen</li><li>Graanproducten</li><li>Wijngaarden</li><li>Medicinale planten</li></ul><p>De regio staat ook bekend om de teelt van cannabis, hoewel dit illegaal is.</p>';
+                modal.classList.add('active');
+            });
+            
+            // Vergelijkbare functies voor andere sectoren en statistieken...
+        });
+    </script>
 </body>
 </html>
